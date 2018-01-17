@@ -17,25 +17,22 @@
         <div class="row no-gutters popup-gallery">
           <div class="col-lg-4 col-sm-6">
               <% @posts.each do |post| %>
-                <%= image_tag post.image.url(:large) %>
-                <%= link_to 'Show', post %>
-                <%= link_to 'Edit', edit_post_path(post) %>
-                <%= link_to 'Destroy', post, method: :delete, data: { confirm: 'Are you sure?' } %>
-
-            <a class="portfolio-box" href="img/portfolio/fullsize/cuba.jpg">
+              <a class="portfolio-box" href="img/portfolio/fullsize/1.jpg">
+                  <%= image_tag post.image :medium %>
               <img class="img-fluid" src="img/portfolio/thumbnails/1.jpg" alt="">
               <div class="portfolio-box-caption">
                 <div class="portfolio-box-caption-content">
                   <div class="project-category text-faded">
-                    <%= post.title %></td>
+                    <%= post.title %>
                   </div>
                   <div class="project-name">
-                    <%= post.body %></td>
+                    <%= post.body %>
                   </div>
                 </div>
               </div>
             </a>
               <% end %>
+
           </div>
           <div class="col-lg-4 col-sm-6">
             <a class="portfolio-box" href="img/portfolio/fullsize/2.jpg">
@@ -68,6 +65,10 @@
               </div>
             </a>
           </div>
+
+          <br>
+
+
           <div class="col-lg-4 col-sm-6">
             <a class="portfolio-box" href="img/portfolio/fullsize/4.jpg">
               <img class="img-fluid" src="img/portfolio/thumbnails/4.jpg" alt="">
@@ -136,48 +137,5 @@
            </div>
          </div>
        </section>
-
-       <!-- Bootstrap core JavaScript -->
-       <script src="vendor/jquery/jquery.min.js"></script>
-       <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-       <!-- Plugin JavaScript -->
-       <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
-       <script src="vendor/scrollreveal/scrollreveal.min.js"></script>
-       <script src="vendor/magnific-popup/jquery.magnific-popup.min.js"></script>
-
-       <!-- Custom scripts for this template -->
-       <script src="js/creative.min.js"></script>
-
-     </body>
-
-   </html>
-
-<h1>Posts</h1>
-
-<table>
-  <thead>
-    <tr>
-      <th>Title</th>
-      <th>Body</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @posts.each do |post| %>
-      <tr>
-        <td><%= post.title %></td>
-        <td><%= post.body %></td>
-        <td><%= image_tag post.image.url(:thumb) %></td>
-        <td><%= link_to 'Show', post %></td>
-        <td><%= link_to 'Edit', edit_post_path(post) %></td>
-        <td><%= link_to 'Destroy', post, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-
-<br>
 
 <%= link_to 'New Post', new_post_path %>
