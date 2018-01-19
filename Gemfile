@@ -5,7 +5,7 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
-
+gem 'rmagick', '~> 2.16'
 gem 'magnific-popup-rails'
 gem 'bootstrap-sass'
 gem 'paperclip', '~> 4.3', '>= 4.3.6'
