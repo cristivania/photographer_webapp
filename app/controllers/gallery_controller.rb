@@ -1,4 +1,12 @@
 class GalleryController < ApplicationController
+
+  def index
+      @gallery = Gallery.all
+
+  end
+
+
+
   def create
   @gallery = Gallery.new(gallery_params)
 
