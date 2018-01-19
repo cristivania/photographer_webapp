@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
-  resources :posts
   resources :galleries
+  resources :posts
+
 
 
   root :to => 'galleries#index'
