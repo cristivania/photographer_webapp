@@ -24,14 +24,14 @@
 
 <div class="row">
   <ul class="thumbnails files">
-<% unless @pictures.empty? %>
-  <% @pictures.each do |pic| %>
+<% unless @posts.empty? %>
+  <% @posts.each do |pic| %>
     <li class="span3" id="picture_<%= pic.id %>">
     <div class="thumbnail">
       <%= image_tag pic.image.url %>
       <div class="caption">
         <p style="text-align: center;">
-        <%= link_to "Edit picture", picture_path(pic) %>
+        <%= link_to "Edit picture", post_path(pic) %>
 
         <%=
           link_to "Delete picture", pic,

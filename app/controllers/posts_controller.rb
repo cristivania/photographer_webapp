@@ -1,74 +1,118 @@
 class PostsController < ApplicationController
-  before_action :set_post, only: [:show, :edit, :update, :destroy]
-
-  # GET /posts
-  # GET /posts.json
+  # GET /pictures
+  # GET /pictures.json
   def index
-    @posts = Post.all
+
+    @gallery = Gallery.find(params[:gallery_id])
+
+    @posts = @gallery.posts
+
+    respond_to do |format|
+      format.html # index.html.erb
+      format.json { render json: @pictures }
+    end
   end
 
-  # GET /posts/1
-  # GET /posts/1.json
+  # GET /pictures/1
+  # GET /pictures/1.json
   def show
+    @post = Post.find(params[:id])
+
+    respond_to do |format|
+      format.html # show.html.erb
+      format.json { render json: @post }
+    end
   end
 
-  # GET /posts/new
+  # GET /pictures/new
+  # GET /pictures/new.json
   def new
-    @post = Post.new
+    @gallery = Gallery.find(params[:gallery_id])
+    @post = @gallery.posts.build
+
+    respond_to do |format|
+      format.html # new.html.erb
+      format.json { render json: @post }
+    end
   end
 
-  # GET /posts/1/edit
+  # GET /pictures/1/edit
   def edit
+    #@gallery = Gallery.find(params[:gallery_id])
+
+    @post = Post.find(params[:id])
+    # @picture = Picture.find(params[:id])
   end
 
-  # POST /posts
-  # POST /posts.json
+  # POST /pictures
+  # POST /pictures.json
   def create
-    @post = Post.new(post_params)
+    @post = Post.new(params[:post])
 
-    respond_to do |format|
-      if @post.save
-        format.html { redirect_to @post, notice: 'Post was successfully created.' }
-        format.json { render :show, status: :created, location: @post }
-      else
-        format.html { render :new }
-        format.json { render json: @post.errors, status: :unprocessable_entity }
+    if @post.save
+      respond_to do |format|
+        format.html {
+          render :json => [@post.to_jq_upload].to_json,
+          :content_type => 'text/html',
+          :layout => false
+        }
+        format.json {
+          render :json => [@post.to_jq_upload].to_json
+        }
       end
+    else
+      render :json => [{:error => "custom_failure"}], :status => 304
     end
   end
 
-  # PATCH/PUT /posts/1
-  # PATCH/PUT /posts/1.json
+  # PUT /pictures/1
+  # PUT /pictures/1.json
   def update
+
+    @gallery = Gallery.find(params[:gallery_id])
+
+    @post = @gallery.posts.find(params[:id])
+
     respond_to do |format|
-      if @post.update(post_params)
-        format.html { redirect_to @post, notice: 'Post was successfully updated.' }
-        format.json { render :show, status: :ok, location: @post }
+      if @post.update_attributes(post_params)
+        format.html { redirect_to gallery_path(@gallery), notice: 'Picture was successfully updated.' }
+        format.json { head :no_content }
       else
-        format.html { render :edit }
+        format.html { render action: "edit" }
         format.json { render json: @post.errors, status: :unprocessable_entity }
       end
     end
   end
 
-  # DELETE /posts/1
-  # DELETE /posts/1.json
+  # DELETE /pictures/1
+  # DELETE /pictures/1.json
   def destroy
+    #@gallery = Gallery.find(params[:gallery_id])
+    #@picture = @gallery.pictures.find(params[:id])
+    @post = Post.find(params[:id])
     @post.destroy
+
     respond_to do |format|
-      format.html { redirect_to posts_url, notice: 'Post was successfully destroyed.' }
-      format.json { head :no_content }
+      format.html { redirect_to root_path }
+      format.js
+    end
+  end
+
+  def make_default
+    @post = Post.find(params[:id])
+    @gallery = Gallery.find(params[:gallery_id])
+
+    @gallery.cover = @post.id
+    @gallery.save
+
+    respond_to do |format|
+      format.js
     end
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_post
-      @post = Post.find(params[:id])
-    end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def post_params
-      params.require(:post).permit(:title, :body, :image)
-    end
+  def post_params
+    params.require(:post).permit(:description, :gallery_id, :image)
+  end
 end

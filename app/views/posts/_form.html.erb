@@ -1,32 +1,35 @@
-<%= form_for @post, html: { multipart: true } do |form| %>
-  <% if post.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(post.errors.count, "error") %> prohibited this post from being saved:</h2>
-
-      <ul>
-      <% post.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
+<%= form_for [@gallery, @post], :html => { :class => 'form-horizontal' } do |f| %>
+  <div class="control-group">
+    <%= f.label :description, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :description, :class => 'text_field' %>
     </div>
+  </div>
+
+    <%= image_tag @post.image.large.url, :id => 'cropbox' %>
+
+  <% %w[x y w h].each do |attribute| %>
+    <%= f.hidden_field "crop_#{attribute}" %>
   <% end %>
 
-  <div class="field">
-    <%= form.label :image %>
-    <%= form.file_field :image, id: :post_image %>
-  </div>
+  <div class="form-actions">
+    <%= f.submit nil, :class => 'btn btn-primary  btn-mini' %>
+    <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
+                gallery_path(@gallery), :class => 'btn btn-mini' %>
+    <%= link_to 'Default', '', :class => 'btn btn-mini btn-success' , :id => 'make_default'%>
 
-  <div class="field">
-    <%= form.label :title %>
-    <%= form.text_field :title, id: :post_title %>
-  </div>
-
-  <div class="field">
-    <%= form.label :body %>
-    <%= form.text_area :body, id: :post_body %>
-  </div>
-
-  <div class="actions">
-    <%= form.submit %>
   </div>
 <% end %>
+
+<script type="text/javascript" charset="utf-8">
+    $(function () {
+      $('#make_default').click(function(event) {
+        event.preventDefault();
+        $.ajax({
+          url: '<%= make_default_gallery_pictures_path %>',
+          type: 'POST',
+          data: {id : <%= @picture.id %>, gallery_id : <%= @gallery.id %>}
+        });
+      });
+    });
+</script>

@@ -14,7 +14,7 @@ class GalleriesController < ApplicationController
   # GET /galleries/1.json
   def show
     @gallery  = Gallery.find(params[:id])
-    @pictures = @gallery.pictures
+    @posts = @gallery.posts
 
     respond_to do |format|
       format.html # show.html.erb
@@ -49,7 +49,7 @@ class GalleriesController < ApplicationController
         if params[:images]
           # The magic is here ;)
           params[:images].each { |image|
-            @galleries.posts.create(image: image)
+            @gallery.posts.create(image: image)
           }
         end
 
@@ -99,9 +99,6 @@ class GalleriesController < ApplicationController
   private
 
   def gallery_params
-    params.require(:gallery).permit(:description,
-                                    :name,
-                                    :pictures
-                                   )
+    params.require(:gallery).permit(:description, :name, :posts)
   end
 end
