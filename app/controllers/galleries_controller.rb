@@ -49,7 +49,7 @@ class GalleriesController < ApplicationController
         if params[:images]
           # The magic is here ;)
           params[:images].each { |image|
-            @galleries.pictures.create(image: image)
+            @galleries.posts.create(image: image)
           }
         end
 
