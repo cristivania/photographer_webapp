@@ -5,6 +5,9 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
+
+gem 'jquery-rails'
+gem 'twitter-bootstrap-rails', '~> 3.2'
 gem 'rmagick', '~> 2.16'
 gem 'magnific-popup-rails'
 gem 'bootstrap-sass'
